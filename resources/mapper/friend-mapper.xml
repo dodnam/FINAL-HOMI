@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="friendMapper">
+	<select id="getListCount" resultType="_int">
+		select count(*)
+		FROM FRIENDS
+		where fd_from = #{id} OR FD_TO = #{id}
+	</select>
+	<select id="selectList" parameterType="string" resultMap="friendResultset">
+	    SELECT  F.FD_NO, F.FD_FROM, F.FD_TO, F.FD_STATUS, M.USER_ID, M.USER_NAME, M.INTRODUCTION ,M.NICKNAME, M.M_KIND, M.M_STATUS,
+             I.IMG_SRC, I.CHANGE_NAME
+	       FROM    FRIENDS F
+	               JOIN MEMBER M ON(FD_TO     = M.USER_ID)
+	               JOIN IMAGE  I ON(I.USER_ID = M.USER_ID)
+	       WHERE   FD_FROM = #{id} AND FD_STATUS = '1' AND M_STATUS = 'N'
+	       UNION
+	       SELECT  F.FD_NO, F.FD_FROM, F.FD_TO, F.FD_STATUS, M.USER_ID, M.USER_NAME, M.INTRODUCTION ,M.NICKNAME, M.M_KIND, M.M_STATUS,
+	             I.IMG_SRC, I.CHANGE_NAME
+	       FROM    FRIENDS F
+	               JOIN MEMBER M ON(FD_FROM   = M.USER_ID)
+	               JOIN IMAGE  I ON(I.USER_ID = M.USER_ID)
+	       WHERE   FD_TO = #{id} AND FD_STATUS = '1' AND M_STATUS = 'N'
+	</select>
+	
+	<select id="getSearchList" resultType="_int">
+		SELECT COUNT(*)
+		FROM (
+		SELECT  M.*, NULL AS FD_FROM, NULL AS FD_TO, NULL AS FD_STATUS
+	    FROM    MEMBER M
+	    WHERE   M.USER_ID != #{id} AND
+	            M.USER_ID NOT IN (
+	                SELECT FD_FROM AS F_USER_ID
+	                FROM FRIENDS F
+	                WHERE FD_TO = #{id}
+	                UNION
+	                SELECT FD_TO AS F_USER_ID
+	                FROM FRIENDS F
+	                WHERE FD_FROM = #{id})
+	    UNION
+	    SELECT  M.*, F.FD_FROM, F.FD_TO, F.FD_STATUS
+	    FROM    MEMBER M
+	            LEFT JOIN FRIENDS F ON(FD_TO = USER_ID)
+	    WHERE   M.USER_ID != #{id} AND
+	            F.FD_FROM = #{id} AND
+	            F.FD_STATUS != '1'
+	    UNION
+	    SELECT  M.*, F.FD_FROM, F.FD_TO, F.FD_STATUS
+	    FROM    MEMBER M
+	            LEFT JOIN FRIENDS F ON(FD_FROM = USER_ID)
+	    WHERE   M.USER_ID != #{id} AND
+	            F.FD_TO = #{id} AND
+	            F.FD_STATUS != '1'
+	   ORDER BY FD_STATUS ASC)
+	</select>
+	
+	<select id="searchList" parameterType="string" resultMap="memberResultSet">
+		SELECT  M.*, NULL AS FD_FROM, NULL AS FD_TO, NULL AS FD_STATUS, i.change_name
+	    FROM    MEMBER M
+               		JOIN IMAGE  I ON(I.USER_ID = M.USER_ID)
+	    WHERE   M.USER_ID != #{id} AND
+	            M.USER_ID NOT IN (
+	                SELECT FD_FROM AS F_USER_ID
+	                FROM FRIENDS F
+	                WHERE FD_TO = #{id}
+	                UNION
+	                SELECT FD_TO AS F_USER_ID
+	                FROM FRIENDS F
+	                WHERE FD_FROM = #{id})
+	    UNION
+	    SELECT  M.*, F.FD_FROM, F.FD_TO, F.FD_STATUS, i.change_name
+	    FROM    MEMBER M
+	            LEFT JOIN FRIENDS F ON(FD_TO = USER_ID)
+                LEFT JOIN IMAGE  I ON(I.USER_ID = M.USER_ID)
+	    WHERE   M.USER_ID != #{id} AND
+	            F.FD_FROM = #{id} AND
+	            F.FD_STATUS = '0'
+	    UNION
+	    SELECT  M.*, F.FD_FROM, F.FD_TO, F.FD_STATUS, i.change_name
+	    FROM    MEMBER M
+	            LEFT JOIN FRIENDS F ON(FD_FROM = USER_ID)
+                LEFT JOIN IMAGE  I ON(I.USER_ID = M.USER_ID)
+	    WHERE   M.USER_ID != #{id} AND
+	            F.FD_TO = #{id} AND
+	            F.FD_STATUS = '0'
+	   ORDER BY FD_STATUS ASC
+	</select>
+	
+	<select id="selectUser" parameterType="string" resultMap="memberResultSet">
+		select *
+		from member
+          left join IMAGE ON(image.user_id = member.user_id)
+		where image.user_id = #{userId}
+	</select>
+	
+	
+	<resultMap	type="Friends"			id="friendResultset">
+		<id		property="fdNo"			column="FD_NO" />
+		<result property="fdFrom"		column="FD_FROM" />
+		<result property="fdTo"			column="FD_TO" />
+		<result property="fdStatus"		column="FD_STATUS" />
+		<result property="userId"		column="USER_ID" />
+		<result property="userName"		column="USER_NAME" />
+		<result property="introduction"	column="INTRODUCTION" />
+		<result property="nickName"		column="NICKNAME" />
+		<result property="changeName"	column="CHANGE_NAME" />
+		<result property="mKind"		column="M_KIND" />
+	</resultMap>
+	 
+	<resultMap	type="Member"			id="memberResultSet">
+		<id		property="userId"		column="USER_ID"/>
+		<result property="userPwd"		column="USER_PWD"/>
+		<result property="userName"		column="USER_NAME"/>
+		<result property="nickName"		column="NICKNAME"/>
+		<result property="birthDate"	column="BIRTH"/>
+		<result property="gender"		column="GENDER"/>
+		<result property="phone"		column="PHONE"/>
+		<result property="email"		column="EMAIL"/>
+		<result property="postalCode"	column="POSTAL_CODE"/>
+		<result property="bAddress"		column="B_ADDRESS"/>
+		<result property="lAddress"		column="L_ADDRESS"/>
+		<result property="createDate"	column="CREATE_DATE"/>
+		<result property="modifyDate"	column="MODIFY_DATE"/>
+		<result property="mStatus"		column="M_STATUS"/>
+		<result property="mKind"		column="M_KIND"/>
+		<result property="introduction"	column="INTRODUCTION"/>
+		<result property="reportCount"	column="REPORT_COUNT"/>
+		<result property="vipYn"		column="VIP_YN"/>
+		<result property="vipDate"		column="VIP_DATE"/>
+		<result property="originName"	column="ORIGIN_NAME"/>
+		<result property="changeName"	column="CHANGE_NAME"/>
+		<result property="imgSrc"		column="IMG_SRC"/>
+		<result property="uploadDate"	column="UPLOAD_DATE"/>
+		<result property="fdStatus"		column="FD_STATUS"/>
+	</resultMap>
+	
+	<select id="getSearchListFCount" parameterType="String" resultType="_int">
+		SELECT COUNT(*)
+		FROM Member
+		WHERE   M_STATUS = 'N'
+				AND NICKNAME LIKE '%' || #{searchValue} || '%'
+	</select> 
+	
+	<select id="selectFList" parameterType="String" resultMap="memberResultSet">
+		select *
+		from Member
+		where M_STATUS = 'N'
+			  and NICKNAME like '%' || #{searchValue} || '%'
+		order by user_id desc
+	</select>
+	
+	<insert id="fRequest" parameterType="Friends">
+		insert into Friends values(seq_fd.nextval, #{fdFrom}, #{fdTo}, '0')
+	</insert>
+	
+	<delete id="fReSet" parameterType="Friends">
+		DELETE FROM FRIENDS
+		WHERE FD_FROM =#{fdFrom} AND FD_TO = #{fdTo}
+	</delete>
+	
+	<select id="getListCountR" parameterType="string" resultType="_int">
+		select count(*)
+		FROM FRIENDS
+		where fd_to = #{id} and fd_status = '0'
+	</select>
+	
+	<select id="RequestPage" resultType="string" resultMap="memberResultSet">
+		select m.*, fd_to, fd_status, i.change_name
+		from member m
+   		LEFT join friends on(user_id = fd_from)
+        LEFT JOIN IMAGE I ON(I.USER_ID = M.USER_ID)
+		where fd_to = #{id} and fd_status = '0'
+	</select>
+	<delete id="fReSetRequest" parameterType="Friends">
+		DELETE FROM FRIENDS
+		WHERE FD_FROM =#{fdFrom} AND FD_TO = #{fdTo} AND FD_STATUS = '0'
+	</delete>
+	<update id="fConsend">
+		UPDATE FRIENDS
+		SET FD_STATUS = '1'
+		WHERE FD_FROM = #{fdFrom} AND FD_TO = #{fdTo}
+	</update>
+	
+	<resultMap type="Report" id="resultReportSet">
+		<id property="rpNo" column="RP_NO" />
+		<result property="rpSender" column="RP_SENDER"/>
+		<result property="rpReciever" column="RP_RECIEVER"/>
+		<result property="rpDate" column="RP_DATE"/>
+		<result property="rpReason" column="RP_REASON"/>
+		<result property="check" column="RP_CHECK"/>
+		<result property="rpDetail" column="RP_DETAIL"/>
+		<result property="rpUrl" column="RP_URL"/>
+	</resultMap>
+	
+	<insert id="reportGo" parameterType="Report">
+		INSERT INTO REPORT VALUES(SEQ_RP_NO.NEXTVAL, #{rpSender}, #{rpReciever}, SYSDATE, #{rpReason}, DEFAULT, #{rpDetail}, #{rpUrl})
+	</insert>
+	
+	<select id="getRCount" resultType="_int">
+		select count(*)
+		FROM REPORT
+	</select>
+	<select id="rePortPage" resultMap="resultReportSet">
+		SELECT *
+		FROM REPORT
+		    JOIN Member ON(USER_ID = RP_RECIEVER)
+		ORDER BY RP_CHECK ASC, RP_NO DESC
+	</select>
+	<update id="pRequest">
+		UPDATE REPORT
+		SET RP_CHECK = 'Y'
+		WHERE RP_NO = #{rpNo}
+	</update>
+	<update id="rpCount">
+		UPDATE MEMBER
+	    SET REPORT_COUNT = REPORT_COUNT + 1
+		WHERE USER_ID = #{rpReciever}
+	</update>
+	
+	<delete id="deleteFrd" parameterType="Friends">
+		DELETE	FROM FRIENDS
+		WHERE	(FD_FROM = #{fdFrom} AND FD_TO = #{fdTo}) OR
+				(FD_FROM = #{fdTo}   AND FD_TO = #{fdFrom})
+	</delete>
+	
+	
+	<select id="selectClass" resultMap="resultConclusionSet" parameterType="Conclusion">
+		select ROWNUM, proposer, CON_NO, start_date, TITLE
+		from  (SELECT proposer, CON_NO, start_date, TITLE, DENSE_RANK() OVER(ORDER BY  CON_NO  DESC) AS 순위
+	    from conclusion
+	    left join board USING(post_no)
+		where proposer = #{userId} AND ROWNUM <![CDATA[ <= ]]> 3 )
+	</select>
+	
+	<resultMap type="Conclusion" id="resultConclusionSet">
+		<id property="postNo" column="CON_NO"/>
+		<result property="proposer" column="proposer"/>
+		<result property="startDate" column="START_DATE"/>
+		<result property="finishDate" column="FINISH_DATE"/>
+		<result property="conTent" column="TITLE"/>
+	</resultMap>
+	
+	<delete id="reportreset" parameterType="Report">
+		DELETE FROM REPORT
+		WHERE RP_NO = #{rpNo}
+	</delete>
+</mapper>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="noticeMapper">
+	<select id="getListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM NOTICE
+			JOIN BOARD USING(POST_NO)
+		WHERE DELETE_YN='N' AND BOARD_NO = 1
+	</select>
+	
+	<select id="selectList" resultMap="NoticeResultSet">
+		SELECT *
+		FROM NOTICE
+			JOIN BOARD USING(POST_NO)
+		WHERE DELETE_YN='N' AND BOARD_NO = 1
+		ORDER BY POST_FIX DESC, POST_NO DESC
+	</select>
+	
+	<resultMap type="Notice" id="NoticeResultSet">
+		<id property="post_no" column="POST_NO"/>
+		<result property="post_fix" column="POST_FIX"/>
+		<result property="writer" column="WRITER"/>
+		<result property="board_no" column="BOARD_NO"/>
+		<result property="title" column="TITLE"/>
+		<result property="content" column="CONTENT"/>
+		<result property="view_count" column="VIEW_COUNT"/>
+		<result property="write_date" column="WRITE_DATE"/>
+		<result property="modify_date" column="MODIFY_DATE"/>
+		<result property="delete_yn" column="DELETE_YN"/>
+	</resultMap>
+	
+	<insert id="insertNotice">
+		INSERT ALL
+			INTO NOTICE VALUES(SEQ_PNO.NEXTVAL, default)
+			INTO BOARD VALUES(SEQ_PNO.NEXTVAL, #{writer}, 1, #{title}, #{content}, default, sysdate, sysdate, default)
+			SELECT * FROM DUAL
+	</insert>
+	
+	<select id="selectNotice" parameterType="_int" resultMap="NoticeResultSet">
+		select *
+		from notice
+			join board using(post_no)
+		where post_no=#{post_no} and delete_yn='N'
+	</select>
+	
+	<update id="addReadCount" parameterType="_int">
+		update board
+		set view_count = view_count + 1
+		where post_no=#{post_no}
+	</update>
+	
+	<update id="updateNotice1">
+		update notice
+		set post_fix=#{post_fix}
+		where post_no=#{post_no}
+	</update>
+	
+	<update id="deleteNotice">
+		update board
+		set delete_yn = 'Y'
+		where post_no=#{post_no}
+	</update>
+	
+<!-- 	<update id="updateNotice1">
+		update notice
+		<set>
+			<if test="post_fix != null">post_fix=#{post_fix}</if>
+			<if test="post_fix = null">post_fix='N'</if>
+		</set>
+		where post_no=#{post_no}
+	</update> -->
+	
+	<update id="updateNotice2">
+		update board
+		set title=#{title}, content=#{content}, modify_date=sysdate
+		where post_no=#{post_no}
+	</update>
+	
+	<select id="getTitleListCount" parameterType="String" resultType="_int">
+		SELECT COUNT(*)
+		FROM BOARD
+		WHERE BOARD_NO = 1 AND DELETE_YN = 'N' AND TITLE LIKE '%' || #{nWord} || '%'
+	</select>
+	
+	<select id="getContentListCount" parameterType="String" resultType="_int">
+		SELECT COUNT(*)
+		FROM BOARD
+		WHERE BOARD_NO = 1 AND DELETE_YN = 'N' AND CONTENT LIKE '%' || #{nWord} || '%'
+	</select>
+	
+	<select id="selectTitleList" parameterType="String" resultMap="NoticeResultSet">
+		SELECT *
+		FROM BOARD
+			FULL OUTER JOIN NOTICE USING(POST_NO)
+		WHERE BOARD_NO = 1 AND DELETE_YN = 'N' AND TITLE LIKE '%' || #{nWord} || '%'
+		ORDER BY POST_NO DESC
+	</select>
+	
+	<select id="selectContentList" parameterType="String" resultMap="NoticeResultSet">
+		SELECT *
+		FROM BOARD
+			FULL OUTER JOIN NOTICE USING(POST_NO)
+		WHERE BOARD_NO = 1 AND DELETE_YN = 'N' AND CONTENT LIKE '%' || #{nWord} || '%'
+		ORDER BY POST_NO DESC
+	</select>
+	
+</mapper>

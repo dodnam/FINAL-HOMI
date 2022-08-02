@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="lectureMapper">
+
+	<select id="selectHobbyList" resultMap="hobbyResultSet">
+		select hobby_no, hobby_name
+		from hobby
+		order by hobby_no
+	</select>
+	
+	<resultMap type="Hobby" id="hobbyResultSet">
+		<id property="hobbyNo" column="HOBBY_NO"/>
+		<result property="hobbyName" column="HOBBY_NAME"/>
+	</resultMap>
+	
+	<insert id="insertBoard" parameterType="LectureBoard">
+		insert into board values(
+			seq_pno.nextval, #{writer}, 2, #{title}, #{content}, 0, sysdate, sysdate, default
+		)
+	</insert>
+	
+	<insert id="insertLecture" parameterType="LectureBoard">
+		insert into lecture values(
+			seq_pno.currval, #{hobbyNo}, #{otTuition}, #{otTime}, #{otAllTime}, #{learner}, #{teacherInfo}, #{ableTime}, #{ablePlace}
+		)
+	</insert>
+	
+	<insert id="insertImg" parameterType="Image">
+		insert into image values(
+			seq_img_id.nextval, seq_pno.currval, null, #{originName}, #{changeName}, #{imgSrc}, sysdate, 0
+		)
+	</insert>
+	
+	<select id="selectLBCount" parameterType="Search" resultType="_int">
+		select count(*)
+		from board
+			 join lecture using(post_no)
+			 join member on(writer = user_id)
+		<where>
+			board_no = 2 and delete_yn = 'N'
+			<choose>
+				<when test='searchTag.equals("title")'>
+					and title like #{searchValue}
+				</when>
+				<when test='searchTag.equals("writer")'>
+					and nickname like #{searchValue}
+				</when>
+			</choose>
+			
+			and able_place like #{searchWhere}
+			<if test='searchCate != 0'>
+				and hobby_no = #{searchCate}
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectLBPage" parameterType="Search" resultMap="LBResultSet">
+		select *
+		from board
+			 join lecture using(post_no)
+			 join member on(writer = user_id)
+			 join hobby using(hobby_no)
+			 join image using(post_no)
+		<where>
+			board_no = 2 and delete_yn = 'N'
+			<choose>
+				<when test='searchTag.equals("title")'>
+					and title like #{searchValue}
+				</when>
+				<when test='searchTag.equals("writer")'>
+					and nickname like #{searchValue}
+				</when>
+			</choose>
+			
+			and able_place like #{searchWhere}
+			<if test='searchCate != 0'>
+				and hobby_no = #{searchCate}
+			</if>
+		</where>
+		order by post_no desc
+	</select>
+	
+	<resultMap type="LectureBoard" id="LBResultSet">
+		<id column="POST_NO" property="postNo"/>
+		<result column="WRITER" property="writer"/>
+		<result column="NICKNAME" property="nickName"/>
+		<result column="TITLE" property="title"/>
+		<result column="CONTENT" property="content"/>
+		<result column="VIEW_COUNT" property="viewCount"/>
+		<result column="WRITE_DATE" property="writeDate"/>
+		<result column="MODIFY_DATE" property="modifyDate"/>
+		<result column="HOBBY_NO" property="hobbyNo"/>
+		<result column="OT_TUITION" property="otTuition"/>
+		<result column="OT_TIME" property="otTime"/>
+		<result column="OT_ALL_TIME" property="otAllTime"/>
+		<result column="LEARNER" property="learner"/>
+		<result column="TEACHER_INFO" property="teacherInfo"/>
+		<result column="ABLE_TIME" property="ableTime"/>
+		<result column="ABLE_PLACE" property="ablePlace"/>
+		
+		<result column="HOBBY_NAME" property="hobbyName"/>
+		<result column="ORIGIN_NAME" property="originName"/>
+		<result column="CHANGE_NAME" property="changeName"/>
+		<result column="IMG_SRC" property="imgSrc"/>
+	</resultMap>
+	
+	<delete id="deleteCategory">
+		delete from hobby
+		where hobby_no = #{hobbyNo}
+	</delete>
+	
+	<insert id="insertCateogy">
+		insert into hobby values(
+			SEQ_HNO.NEXTVAL, #{hobbyName}
+		)
+	</insert>
+	
+	<update id="updateCategory" parameterType="Hobby">
+		update hobby
+		set hobby_name = #{hobbyName}
+		where hobby_no = #{hobbyNo}
+	</update>
+	
+	<select id="selectLB" resultMap="LBResultSet">
+		select *
+		from board b
+			 join lecture using(post_no)
+			 join member on(writer = user_id)
+			 join hobby using(hobby_no)
+			 join image using(post_no)
+		where post_no = #{postNo}
+	</select>
+	
+	<resultMap type="Reply" id="replyResultSet">
+		<id property="rNo" column="RNO"/>
+		<result property="refPno" column="REFPNO"/>
+		<result property="rWriter" column="RWRITER"/>
+		<result property="rNickName" column="NICKNAME"/>
+		<result property="rContent" column="RCONTENT"/>
+		<result property="rWriteDate" column="RWRITE_DATE"/>
+		<result property="rmodifyDate" column="RMODIFY_DATE"/>
+		<result property="rDeleteYN" column="RDELETE_YN"/>
+		
+		<result property="imgId" column="IMG_ID"/>
+		<result property="originName" column="ORIGIN_NAME"/>
+		<result property="changeName" column="CHANGE_NAME"/>
+		<result property="imgSrc" column="IMG_SRC"/>
+	</resultMap>
+	
+	<select id="selectRList" resultMap="replyResultSet">
+		select * 
+		from reply
+			 join member on(user_id = rwriter)
+			 join image using(user_id)
+		where post_no is null and refpno = #{postNo} and rdelete_yn = 'N'
+	</select>
+	
+	<insert id="insertReply" parameterType="Reply">
+		insert into reply values(
+			seq_rno.nextval, #{refPno}, #{rWriter}, #{rContent}, sysdate, sysdate, default 
+		)
+	</insert>
+	
+	<insert id="insertConclusion" parameterType="Conclusion">
+		insert into conclusion values(
+			seq_conc.nextval, #{postNo}, #{proposer}, to_date(#{startDate}, 'yyyy-mm-dd hh24'), to_date(#{finishDate}, 'yyyy-mm-dd hh24'), sysdate
+		)
+	</insert>
+	
+	<update id="updateLecture">
+		update lecture
+		set hobby_no = #{hobbyNo}, ot_tuition = #{otTuition}, ot_time = #{otTime}, ot_all_time = #{otAllTime},
+			learner = #{learner}, teacher_info = #{teacherInfo}, able_time = #{ableTime}, able_place = #{ablePlace}
+		where post_no = #{postNo}
+	</update>
+	
+	<select id="checkBeforeConclusion" parameterType="Conclusion" resultType="_int">
+		select count(*)
+		from conclusion
+		where post_no = #{postNo} and proposer = #{proposer}
+	</select>
+	
+	<update id="updateReply">
+		update reply
+		set rcontent = #{rContent}
+		where rno = #{rNo}
+	</update>
+	
+	<delete id="deleteReply">
+		update reply
+		set rdelete_yn = 'Y'
+		where rno = #{rNo}
+	</delete>
+	
+	<update id="updateBoard">
+		update board
+		set title = #{title}, content = #{content}, modify_date = sysdate
+		where post_no = #{postNo}
+	</update>
+	
+	<update id="deleteBoard">
+		update board
+		set delete_yn = 'Y'
+		where post_no = #{postNo}
+	</update>
+	
+	<update id="updateImg">
+		update image
+		set origin_name = #{originName}, change_name = #{changeName}, img_src = #{imgSrc}, upload_date = sysdate
+		where post_no = #{postNo} and file_level = 0
+	</update>
+	
+	<select id="selectConclusion" resultMap="ConcResultSet">
+		select con_no
+		from conclusion
+		where post_no = #{postNo} and proposer = #{proposer} and to_char(start_date,'YYYY-MM-DD HH24') = #{startDate} and to_char(finish_date,'YYYY-MM-DD HH24') = #{finishDate}
+	</select>
+	
+	<resultMap type="Conclusion" id="ConcResultSet">
+		<id property="concNo" column="CON_NO"/>
+	</resultMap>
+	
+	<insert id="insertTimeline" parameterType="Timeline">
+		insert into timetable values(
+			seq_tno.nextval, #{userId}, #{postNo}, #{timeline}, #{concNo} 
+		)
+	</insert>
+	
+	<select id="selectCCCount" resultType="_int">
+		SELECT	COUNT(*)
+		FROM	BOARD
+		JOIN	CONCLUSION	USING(POST_NO)
+		JOIN	MEMBER		ON(WRITER = USER_ID)
+	</select>
+	
+	<select id="selectCCPage" resultMap="CCResultSet">
+		SELECT	DISTINCT C.POST_NO, B.TITLE, M.NICKNAME, I.CHANGE_NAME
+		FROM	CONCLUSION	C
+		JOIN	BOARD		B  ON(C.POST_NO	 = B.POST_NO)
+		JOIN	LECTURE		L  ON(C.POST_NO	 = B.POST_NO)
+		JOIN	MEMBER		M  ON(B.WRITER	 = M.USER_ID)
+		JOIN	IMAGE		I  ON(C.POST_NO	 = I.POST_NO)
+		WHERE	B.BOARD_NO = 2 AND L.POST_NO = C.POST_NO
+		ORDER	BY C.POST_NO DESC
+	</select>
+	
+	<resultMap type="LectureBoard" id="CCResultSet">
+		<id		column="POST_NO" property="postNo"/>
+		<result column="NICKNAME" property="nickName"/>
+		<result column="TITLE" property="title"/>
+		<result column="CHANGE_NAME" property="changeName"/>
+	</resultMap>
+	
+	<update id="updateStatics">
+		update statics
+		set COUNT_CONCLUDED = COUNT_CONCLUDED + 1
+		where to_char(COUNT_DATE, 'YYYYMMDD') = to_char(sysdate, 'YYYYMMDD')
+	</update>
+</mapper>

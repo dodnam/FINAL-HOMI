@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL"/>
+	</settings> 
+
+	<typeAliases>
+		<typeAlias type="finalProject.homis.hobbyFarm.member.model.vo.Member"					alias="Member"/>
+		<typeAlias type="finalProject.homis.hobbyFarm.statistics.model.vo.Statistics"			alias="Statistics"/>
+		<typeAlias type="finalProject.homis.hobbyFarm.notice.model.vo.Notice"					alias="Notice"/>
+		<typeAlias type="finalProject.homis.hobbyFarm.groupFarm.model.vo.GroupFarmBoard"		alias="gfBoard"/>
+		<typeAlias type="finalProject.homis.hobbyFarm.groupFarm.model.vo.GroupFarmApplication"	alias="gfApp"/>
+		<typeAlias type="finalProject.homis.hobbyFarm.common.model.vo.Image"					alias="Image"/>
+		<typeAlias type="finalProject.homis.hobbyFarm.common.model.vo.Reply"					alias="Reply"/>
+		<typeAlias type="finalProject.homis.hobbyFarm.common.model.vo.Hobby"					alias="Hobby"/>
+		<typeAlias type="finalProject.homis.hobbyFarm.questions.model.vo.Questions"				alias="Questions"/>
+		<typeAlias type="finalProject.homis.hobbyFarm.friends.model.vo.Friends"					alias="Friends"/>
+		<typeAlias type="finalProject.homis.hobbyFarm.message.model.vo.Message"					alias="Message"/>
+		<typeAlias type="finalProject.homis.hobbyFarm.lecture.model.vo.LectureBoard"			alias="LectureBoard"/>
+		<typeAlias type="finalProject.homis.hobbyFarm.lecture.model.vo.Search"					alias="Search"/>
+    	<typeAlias type="finalProject.homis.hobbyFarm.common.model.vo.SearchSelect"				alias="SearchSelect"/>
+    	<typeAlias type="finalProject.homis.hobbyFarm.statistics.model.vo.Statistics"			alias="Statistics"/>
+    	<typeAlias type="finalProject.homis.hobbyFarm.lecture.model.vo.Conclusion"				alias="Conclusion"/>
+    	<typeAlias type="finalProject.homis.hobbyFarm.myPage.model.vo.myPageCount"				alias="myPageCount"/>
+    	<typeAlias type="finalProject.homis.hobbyFarm.friends.model.vo.Report"					alias="Report"/> 
+    	<typeAlias type="finalProject.homis.hobbyFarm.common.model.vo.Teacher"					alias="Teacher"/>
+    	<typeAlias type="finalProject.homis.hobbyFarm.myPage.model.vo.Timeline"				alias="Timeline"/>
+	</typeAliases>
+	<mappers>
+		<mapper resource="mapper/member-mapper.xml"/>
+		<mapper resource="mapper/groupFarm-mapper.xml"/>
+		<mapper resource="mapper/notice-mapper.xml"/>
+		<mapper resource="mapper/questions-mapper.xml"/>
+		<mapper resource="mapper/management-mapper.xml"/>
+		<mapper resource="mapper/friend-mapper.xml"/>
+		<mapper resource="mapper/message-mapper.xml"/>
+		<mapper resource="mapper/lecture-mapper.xml"/>
+    	<mapper resource="mapper/statistics-mapper.xml"/>
+    	<mapper resource="mapper/myPage-mapper.xml"/>
+	</mappers>
+
+</configuration>

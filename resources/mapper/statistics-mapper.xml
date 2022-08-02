@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="statisticsMapper">
+	<select id="getMemberCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE M_STATUS ='N'
+	</select>
+	
+	<select id="getLectureCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM LECTURE
+			JOIN BOARD USING (POST_NO)
+		WHERE DELETE_YN = 'N'
+	</select>
+	
+	<select id="getVisitCount" resultType="_int">
+		SELECT NVL(SUM(COUNT_VISIT), 0)
+		FROM STATICS
+	</select>
+	
+	<select id="getTeacherCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE M_STATUS ='N' AND M_KIND = 2
+	</select>
+	
+	<select id="getStudentCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE M_STATUS ='N' AND M_KIND = 1
+	</select>
+	
+	<!-- 예술 -->
+	<select id="getArtCount" resultType="_int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM LECTURE
+			WHERE HOBBY_NO IN (55,56,57,58,59,60,61,62,63,52,64,65,76)
+		]]>
+	</select>
+	
+	<!-- 공예 -->
+	<select id="getCraftsCount" resultType="_int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM LECTURE
+			WHERE HOBBY_NO IN (43,45,54)
+		]]>
+	</select>
+	
+	<!-- 음악 -->
+	<select id="getMusicCount" resultType="_int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM LECTURE
+			WHERE HOBBY_NO IN (33,34,35,36,37,38,39,40,41,42)
+		]]>
+	</select>
+	
+	<!-- 디자인 -->
+	<select id="getDesignCount" resultType="_int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM LECTURE
+			WHERE HOBBY_NO IN (16,17,18,19,20,21,22,44)
+		]]>
+	</select>
+	
+	<!-- 미디어 -->
+	<select id="getPictureCount" resultType="_int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM LECTURE
+			WHERE HOBBY_NO IN (16,17,18,19,20,21,22,44)
+		]]>
+	</select>
+	
+	<!-- 요리 -->
+	<select id="getCookCount" resultType="_int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM LECTURE
+			WHERE HOBBY_NO IN (50,51,53)
+		]]>
+	</select>
+	
+	<!-- 스포츠 -->
+	<select id="getSportsCount" resultType="_int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM LECTURE
+			WHERE HOBBY_NO IN (66,67,68,69,70,71,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101)
+		]]>
+	</select>
+	
+	<select id="getBeautyCount" resultType="_int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM LECTURE
+			WHERE HOBBY_NO IN (10,11,12,13,14,15,49)
+		]]>
+	</select>
+	
+	<select id="getLanguageCount" resultType="_int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM LECTURE
+			WHERE HOBBY_NO IN (23,24,25,26,27,28,29,30,31,32)
+		]]>
+	</select>
+	
+	<select id="getOtherCount" resultType="_int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM LECTURE
+			WHERE HOBBY_NO IN (46,47,48,72,73,74,75,78,79,80,81)
+		]]>
+	</select>
+	
+	
+	<select id="selectList" resultMap="StatisticsResultSet">
+		SELECT *
+		FROM STATICS
+		WHERE TO_CHAR(COUNT_DATE,'YYYYMM') = #{yearMonth}
+	</select>
+	
+	<resultMap type="Statistics" id="StatisticsResultSet">
+		<id property="sysdate" column="COUNT_DATE"/>
+		<result property="memberCount" column="COUNT_USER"/>
+		<result property="visitCount" column="COUNT_VISIT"/>
+		<result property="lectureCount" column="COUNT_CLASS"/>
+		<result property="conLectureCount" column="COUNT_CONCLUDED"/>
+	</resultMap>
+	
+	<select id="getArtCount2" resultType="_int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM CONCLUSION
+                JOIN LECTURE USING(POST_NO)
+			WHERE HOBBY_NO IN (55,56,57,58,59,60,61,62,63,52,64,65,76)
+		]]>
+	</select>
+	<select id="getCraftsCount2" resultType="_int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM CONCLUSION
+                JOIN LECTURE USING(POST_NO)
+			WHERE HOBBY_NO IN (43,45,54)
+		]]>
+	</select>
+	<select id="getMusicCount2" resultType="_int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM CONCLUSION
+                JOIN LECTURE USING(POST_NO)
+			WHERE HOBBY_NO IN (33,34,35,36,37,38,39,40,41,42)
+		]]>
+	</select>
+	<select id="getDesignCount2" resultType="_int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM CONCLUSION
+                JOIN LECTURE USING(POST_NO)
+			WHERE HOBBY_NO IN (1,2,3,4,6,7,8,9,77)
+		]]>
+	</select>
+	<select id="getPictureCount2" resultType="_int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM CONCLUSION
+                JOIN LECTURE USING(POST_NO)
+			WHERE HOBBY_NO IN (16,17,18,19,20,21,22,44)
+		]]>
+	</select>
+	<select id="getCookCount2" resultType="_int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM CONCLUSION
+                JOIN LECTURE USING(POST_NO)
+			WHERE HOBBY_NO IN (50,51,53)
+		]]>
+	</select>
+
+	<select id="getSportsCount2" resultType="_int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM CONCLUSION
+                JOIN LECTURE USING(POST_NO)
+			WHERE HOBBY_NO IN (66,67,68,69,70,71,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101)
+		]]>
+	</select>
+	
+	<select id="getBeautyCount2" resultType="_int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM CONCLUSION
+                JOIN LECTURE USING(POST_NO)
+			WHERE HOBBY_NO IN (10,11,12,13,14,15,49)
+		]]>
+	</select>
+	
+	<select id="getLanguageCount2" resultType="_int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM CONCLUSION
+                JOIN LECTURE USING(POST_NO)
+			WHERE HOBBY_NO IN (23,24,25,26,27,28,29,30,31,32)
+		]]>
+	</select>
+	
+	<select id="getOtherCount2" resultType="_int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM CONCLUSION
+                JOIN LECTURE USING(POST_NO)
+			WHERE HOBBY_NO IN (46,47,48,72,73,74,75,78,79,80,81) OR HOBBY_NO > 101
+		]]>
+	</select>
+	
+	
+</mapper>

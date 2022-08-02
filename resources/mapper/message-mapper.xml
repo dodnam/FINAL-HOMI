@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="messageMapper">
+
+	
+	<!-- 받은 쪽지 리스트 -->
+	<select id="getListCount" parameterType="String" resultType="_int">
+		SELECT COUNT(*)
+		FROM msg_view
+		WHERE MSG_TO = #{id} AND TO_DELETE = 'N'
+	</select>
+	<select id="selectList" resultMap="MessageResultSet">
+		SELECT MNO, TONICK, FROMNICK, MSG_TITLE, MSG_CONTENT, MSG_DATE, MSG_VIEW, TO_DELETE, FROM_DELETE
+		FROM msg_view
+		WHERE MSG_TO = #{id} AND TO_DELETE = 'N'
+		ORDER BY MNO DESC
+	</select>
+	
+	<!-- 보낸 쪽지 리스트 -->
+	<select id="sentListCount" parameterType="String" resultType="_int">
+		SELECT COUNT(*)
+		FROM msg_view
+		WHERE MSG_FROM = #{id} AND FROM_DELETE = 'N'
+	</select>
+	<select id="selectSentList" resultMap="MessageResultSet">
+		SELECT MNO, TONICK, FROMNICK, MSG_TITLE, MSG_CONTENT, MSG_DATE, MSG_VIEW, TO_DELETE, FROM_DELETE
+		FROM msg_view
+		WHERE MSG_FROM = #{id} AND FROM_DELETE = 'N'
+		ORDER BY MNO DESC
+	</select>
+	
+	<select id="updateMessageCount">
+		update message
+		set msg_view = msg_view + 1
+		where mno = #{mNo}
+	</select>
+	<select id="selectMsg" resultMap="MessageResultSet">
+		select MNO, TONICK, FROMNICK, MSG_TITLE, MSG_CONTENT, MSG_DATE, MSG_VIEW, TO_DELETE, FROM_DELETE
+		from msg_view
+		where mno = #{mNo}
+	</select>
+	
+	<update id="deleteGetMsg">
+		update message
+		set to_delete = 'Y'
+		where mno = #{mNo}
+	</update>
+	<update id="deleteSentMsg">
+		update message
+		set from_delete = 'Y'
+		where mno = #{mNo}
+	</update>
+	
+	<select id="findNick" resultMap="memberResultSet">
+		select user_id
+		from member
+		where nickname = #{msg_to}
+	</select>
+	<select id="findKind" resultMap="memberResultSet" resultType="_int">
+		select m_kind
+		from member
+		where user_id = #{msg_to}
+	</select>
+	
+	<insert id="insertMsg" parameterType="Message">
+		insert into Message
+		values(SEQ_MNO.NEXTVAL, #{msg_to}, #{msg_from}, #{msg_title}, #{msg_content}, sysdate, default, default, default)
+	</insert>
+	
+	<resultMap type="Message" id="MessageResultSet">
+		<id property="mNo" column="MNO"/>
+		<result property="msg_to" column="MSG_TO"/>
+		<result property="msg_to" column="TONICK"/>
+		<result property="msg_from" column="MSG_FROM"/>
+		<result property="msg_from" column="FROMNICK"/>
+		<result property="msg_title" column="MSG_TITLE"/>
+		<result property="msg_content" column="MSG_CONTENT"/>
+		<result property="msg_date" column="MSG_DATE"/>
+		<result property="msg_view" column="MSG_VIEW"/>
+		<result property="to_delete" column="TO_DELETE"/>
+		<result property="from_delete" column="FROM_DELETE"/>
+	</resultMap>
+	
+	<resultMap	type="Member"			id="memberResultSet">
+		<id		property="userId"		column="USER_ID"/>
+		<result property="userPwd"		column="USER_PWD"/>
+		<result property="userName"		column="USER_NAME"/>
+		<result property="birthDate"	column="BIRTH"/>
+		<result property="gender"		column="GENDER"/>
+		<result property="phone"		column="PHONE"/>
+		<result property="email"		column="EMAIL"/>
+		<result property="postalCode"	column="POSTAL_CODE"/>
+		<result property="bAddress"		column="B_ADDRESS"/>
+		<result property="lAddress"		column="L_ADDRESS"/>
+		<result property="createDate"	column="CREATE_DATE"/>
+		<result property="modifyDate"	column="MODIFY_DATE"/>
+		<result property="mStatus"		column="M_STATUS"/>
+		<result property="mKind"		column="M_KIND"/>
+		<result property="introduction"	column="INTRODUCTION"/>
+		<result property="reportCount"	column="REPORT_COUNT"/>
+		<result property="vipYn"		column="VIP_YN"/>
+		<result property="vipDate"		column="VIP_DATE"/>
+		<result property="originName"	column="ORIGIN_NAME"/>
+		<result property="changeName"	column="CHANGE_NAME"/>
+		<result property="imgSrc"		column="IMG_SRC"/>
+		<result property="uploadDate"	column="UPLOAD_DATE"/>
+	</resultMap>
+</mapper>

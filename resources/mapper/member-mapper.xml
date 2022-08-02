@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="memberMapper">
+	<select id="selectOne" parameterType="Member" resultMap="memberResultSet">
+		SELECT	*
+		FROM	MVIEW
+		WHERE	USER_ID = #{userId} AND M_STATUS = 'N'
+	</select>
+	<resultMap	type="Member"			id="memberResultSet">
+		<id		property="userId"		column="USER_ID"/>
+		<result property="userPwd"		column="USER_PWD"/>
+		<result property="userName"		column="USER_NAME"/>
+		<result property="nickName"		column="NICKNAME"/>
+		<result property="birthDate"	column="BIRTH"/>
+		<result property="gender"		column="GENDER"/>
+		<result property="phone"		column="PHONE"/>
+		<result property="email"		column="EMAIL"/>
+		<result property="postalCode"	column="POSTAL_CODE"/>
+		<result property="bAddress"		column="B_ADDRESS"/>
+		<result property="lAddress"		column="L_ADDRESS"/>
+		<result property="createDate"	column="CREATE_DATE"/>
+		<result property="modifyDate"	column="MODIFY_DATE"/>
+		<result property="mStatus"		column="M_STATUS"/>
+		<result property="mKind"		column="M_KIND"/>
+		<result property="introduction"	column="INTRODUCTION"/>
+		<result property="reportCount"	column="REPORT_COUNT"/>
+		<result property="vipYn"		column="VIP_YN"/>
+		<result property="vipDate"		column="VIP_DATE"/>
+		<result property="originName"	column="ORIGIN_NAME"/>
+		<result property="changeName"	column="CHANGE_NAME"/>
+		<result property="imgSrc"		column="IMG_SRC"/>
+		<result property="uploadDate"	column="UPLOAD_DATE"/>
+		<result property="activeLoc"	column="ACTIVE_LOC"/>
+		<result property="hobbyNo"		column="HOBBY_NO"/>
+		<result property="hobbyName"	column="HOBBY_NAME"/>
+	</resultMap>
+	
+	<select id="checkIdDup" parameterType="string" resultType="_int">
+		SELECT	COUNT(*)
+		FROM	MEMBER
+		WHERE	USER_ID = #{userId}
+	</select>
+	
+	<select id="checkNickDup" parameterType="string" resultType="_int">
+		SELECT	COUNT(*)
+		FROM	MEMBER
+		WHERE	NICKNAME = #{nickName}
+	</select>
+	
+	<select id="checkEmailDup" parameterType="string" resultType="_int">
+		SELECT	COUNT(*)
+		FROM	MEMBER
+		WHERE	EMAIL = #{email}
+	</select>
+	
+	<insert id="insertMember" parameterType="Member">
+		INSERT	INTO MEMBER VALUES (
+			#{userId}, #{userPwd}, #{userName}, #{nickName}, #{birthDate}, #{gender}, #{phone}, #{email}, #{postalCode}, #{bAddress}, #{lAddress},
+			DEFAULT, DEFAULT, DEFAULT, #{mKind}, NULL, DEFAULT, DEFAULT, NULL
+		)
+	</insert>
+	
+	<insert id="insertUserImg" parameterType="Member">
+		INSERT	INTO IMAGE VALUES (
+			SEQ_IMG_ID.NEXTVAL, NULL, #{userId}, #{originName}, #{changeName}, #{imgSrc}, DEFAULT, DEFAULT
+		)
+	</insert>
+	
+	<insert id="insertTeacher" parameterType="string">
+		INSERT	INTO TEACHER VALUES (
+			#{userId}, DEFAULT, DEFAULT
+		)
+	</insert>
+	
+	<select id="checkGoogleDup" parameterType="string" resultType="_int">
+		SELECT	COUNT(*)
+		FROM	MEMBER
+		WHERE	USER_ID = #{googleId}
+	</select>
+	
+	<select id="isExist" parameterType="string" resultType="_int">
+		SELECT	COUNT(*)
+		FROM	MEMBER
+		WHERE	EMAIL = #{email}
+	</select>
+	
+	<select id="findid" parameterType="Member" resultMap="memberResultSet">
+		SELECT	*
+		FROM	MVIEW
+		WHERE	EMAIL = #{email}
+	</select>
+	
+	<update id="updatePwd" parameterType="Member">
+		UPDATE	MEMBER
+		SET		USER_PWD = #{userPwd}
+		WHERE	USER_ID = #{userId}
+	</update>
+	
+	<update id="deleteMember" parameterType="string">
+		UPDATE	MEMBER
+		SET		M_STATUS = 'Y'
+		WHERE	USER_ID = #{userId}
+	</update>
+	
+	<update id="updateMember" parameterType="Member">
+		UPDATE	MEMBER
+		SET		NICKNAME = #{nickName}, USER_NAME = #{userName}, EMAIL = #{email},
+				GENDER = #{gender}, BIRTH = #{birthDate}, PHONE = #{phone},
+				POSTAL_CODE = #{postalCode}, B_ADDRESS = #{bAddress}, L_ADDRESS = #{lAddress},
+				MODIFY_DATE = SYSDATE, INTRODUCTION = #{introduction}
+		WHERE	USER_ID = #{userId}
+	</update>
+	
+	<update id="updateImg" parameterType="Member">
+		UPDATE	IMAGE 
+		SET		ORIGIN_NAME = #{originName},
+				CHANGE_NAME = #{changeName}
+		WHERE	USER_ID		= #{userId}
+	</update>
+	
+	<update id="updateTeacher" parameterType="Member">
+		UPDATE	TEACHER
+		SET		ACTIVE_LOC = #{activeLoc},
+				HOBBY_NO = #{hobbyNo}
+		WHERE	USER_ID = #{userId}
+	</update>
+	
+	<update id="countVisit" parameterType="string">
+		UPDATE	STATICS
+		SET		COUNT_VISIT = COUNT_VISIT + 1
+		WHERE	COUNT_DATE  = #{sysdate}
+	</update>
+	
+	<update id="countUser" parameterType="string">
+		UPDATE	STATICS
+		SET		COUNT_USER = COUNT_USER + 1
+		WHERE	COUNT_DATE  = #{sysdate}
+	</update>
+	
+	<update id="countUser2" parameterType="string">
+		UPDATE	STATICS
+		SET		COUNT_USER = COUNT_USER - 1
+		WHERE	COUNT_DATE  = #{sysdate}
+	</update>
+	
+	<select id="getPwd" parameterType="string" resultType="string">
+		SELECT	USER_PWD
+		FROM	MEMBER
+		WHERE	USER_ID = #{id}
+	</select>
+</mapper>
