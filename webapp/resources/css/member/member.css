@@ -1,0 +1,528 @@
+@charset "UTF-8";
+
+.wrapper{z-index:1;}
+
+body {
+	background-color: #fff6f0; font-family: 'Nanum Gothic', sans-serif; margin:0; padding:0;
+}
+
+input {
+	font-family: 'Nanum Gothic', sans-serif;
+}
+
+button {
+	font-family: 'Nanum Gothic', sans-serif;
+}
+
+#loginForm {
+	background: white;
+	text-align: center;
+	margin-left : 10%;	margin-right  : 10%;
+	margin-top  : 5%;	margin-bottom : 5%;
+	height: 100%;
+	width: 80%;
+}
+
+#loginTable {
+	width: 100%;
+	text-align: center;
+}
+
+.loginInput {
+	height: 30px;
+	width: 80%;
+	text-indent: 10px;
+	margin-left: 5%;
+}
+
+
+#buttonB3 {
+	width: 200px; background-color: #675141; color: #fff; font-size: 15px; 
+	border: none; padding: 10px 0; margin: 4px;  
+	text-align: center; border-radius: 5px;
+	margin: 0 auto; 
+	cursor: pointer;
+}
+
+#buttonB2 {
+	width: 110px; background-color: #675141; color: #fff; font-size: 15px; 
+	border: none; padding: 10px 0; margin: 4px;  
+	text-align: center; border-radius: 5px;
+	margin: 0 auto;
+	margin-bottom: 28%;
+	margin-left: 110%;
+}
+
+#buttonB1 {
+	width: 110px; background-color: #675141; color: #fff; font-size: 15px; 
+	border: none; padding: 10px 0; margin: 4px;  
+	text-align: center; border-radius: 5px;
+	margin: 0 auto;
+	margin-top: 10px; margin-bottom: 10px;
+	margin-left: 110%;
+}
+
+#buttonB {
+	width: 10%;
+	background-color: #675141; color: #fff; font-size: 15px; 
+	border: none; padding: 10px 0;
+	text-align: center; border-radius: 5px;
+	margin-top: 10px; margin-bottom: 10px;
+	cursor: pointer;
+}
+
+.buttonG2 {
+	width: 110px; background-color: #888c43; color: #fff; font-size: 15px; 
+	border: none; padding: 10px 0; margin: 4px; 
+	text-align: center; border-radius: 5px; cursor: pointer;
+	margin-top: 1%; margin-bottom: 1%;
+	margin-left: 2.5%;;
+}
+
+.buttonP {
+	width: 110px; background-color: rgb(255, 246, 240); color: black; font-size: 16px; font-weight: bold; 
+	border: 1px solid black; padding: 10px 0; margin: 4px;  
+	text-align: center; border-radius: 20px;
+	margin-top: 10px; margin-bottom: 10px;
+	cursor: pointer;
+}
+
+#buttonB_join {
+	width: 10%;
+	background-color: #675141; color: #fff; font-size: 15px; 
+	border: none; padding: 10px 0;
+	text-align: center; border-radius: 5px;
+	margin-top: 10px; margin-bottom: 10px;
+	margin-left: 45%;
+	cursor: pointer;
+}
+
+.joinCheck {
+	margin-right: 8.5%;
+}
+
+th {
+	width: 150px;
+}
+
+#submitBtn {
+	width: 8%;
+}
+
+.google-btn-gh {
+	width: 26%;
+}
+
+hr {
+	color: black;
+}
+
+
+#JoinForm {
+	background: white;
+	text-align: center;
+	margin-left : 10%;	margin-right  : 10%;
+	margin-top  : 5%;	margin-bottom : 5%;
+	height: 100%;
+	width: 80%;
+}
+
+#userImg {
+	border: 2px solid;
+	border-radius: 70%;
+	width: 150px;
+	height: 150px;
+}
+
+.JoinInput {
+	height: 30px;
+	width: 80%;
+	margin-left: 3%;
+	text-indent: 10px;
+}
+
+#joinEmail {
+	width: 68.9%;
+}
+
+#gender {
+	height: 35px;
+}
+
+.JoinInputSelect {
+	height: 35px;
+	width: 26.5%;
+	text-indent: 10px;
+}
+
+#date {
+	margin-right: 30px;
+}
+
+#post {
+	width: 68.9%;
+}
+
+#address1 {
+	margin-bottom: 10px;
+}
+
+#addressBtn {
+	width: 110px; background-color: #675141; color: #fff; font-size: 15px; 
+	border: none; padding: 10px 0; margin: 4px;  
+	text-align: center; border-radius: 5px;
+	margin: 0 auto;
+	margin-left: 110%;
+	margin-bottom: 80%;
+}
+
+#googleIcon {
+	width: 10%;	
+}
+
+#googleIcon2 {
+	width: 50%;	
+}
+
+#signOutGoogle {
+	font-size:0.8rem; cursor:pointer;
+	border:1px solid gainsboro;
+	width: 10%; height: 5%;
+	padding: 10px 0px;
+	font-weight: bold;
+	text-align:center;
+	display: none;
+}
+
+.rule {
+	cursor: pointer;
+}
+
+#year {
+	margin-left: 5.3%;
+}
+
+
+
+#idFindForm {
+	background: white;
+	text-align: center;
+	margin-left : 10%;	margin-right  : 10%;
+	margin-top  : 5%;	margin-bottom : 5%;
+	height: 100%;
+	width: 80%;
+}
+
+#pwdFindForm {
+	background: white;
+	text-align: center;
+	margin-left : 10%;	margin-right  : 10%;
+	margin-top  : 5%;	margin-bottom : 5%;
+	height: 100%;
+	width: 80%;
+}
+
+.findInput {
+	height: 30px;
+	width: 750px;
+	margin-left:30px;
+	text-indent: 10px;
+}
+
+
+
+.JoinSelectArea {
+	background: white;
+	text-align: center;
+	margin-left : 10%;	margin-right  : 10%;
+	margin-top  : 5%;	margin-bottom : 5%;
+	height: 100%;
+	width: 80%;
+}
+
+#joinBtnArea {
+	margin-top: 40px;
+	margin-bottom: 40px;
+	margin-left: 30%;
+	width: 50%;
+}
+
+#joinAreaInfo {
+	word-break: break-all;
+	width: 110%;
+	line-height: 30px;
+}
+
+
+
+#myInfoForm {
+	background: white;
+	text-align: center;
+	margin-left : 10%;	margin-right  : 10%;
+	margin-top  : 5%;	margin-bottom : 5%;
+	height: 100%;
+	width: 80%;
+}
+
+#myInfoTable {
+	width: 100% ;
+}
+
+#buttonB4 {
+	width: 140%;
+	background-color: #675141; color: #fff; font-size: 15px; 
+	border: none; padding: 10px 0;
+	text-align: center; border-radius: 5px;
+	margin: 0 auto;
+	margin-left: 40%;
+}
+
+.buttonG3 {
+	width: 200px;
+	background-color: #888c43; color: #fff; font-size: 15px; 
+	border: none; padding: 10px 0; margin: 4px; 
+	border-radius: 5px; cursor: pointer;
+}
+
+.buttonGr {
+	width: 200px;
+	background-color: rgb(127, 127, 127); color: #fff; font-size: 15px; 
+	border: none; padding: 10px 0; margin: 4px; 
+	border-radius: 5px; cursor: pointer;
+}
+
+#userImg_info1 {
+	border: 2px solid;
+	border-radius: 70%;
+	width: 180px;
+	height: 180px;
+}
+
+#hr1 {
+	border-color: lightgray;
+	width: 80%;
+	margin-left: 10%;
+	margin-top: 5%; margin-bottom: 5%; 
+}
+
+.infoInput {
+	height: 30px;
+	width: 50%;
+	text-indent: 10px; 
+	font-family: 'Nanum Gothic', sans-serif;
+}
+
+.infoTextarea1 {
+	width: 80%;
+	height: 400px;
+	resize: none;
+	font-size: 20px;
+	font-family: 'Nanum Gothic', sans-serif;
+	padding: 10px 0 0 10px;
+	border: 1px solid;
+	line-height: 50px;
+}
+
+
+.infoInput_address {
+	height: 30px;
+	width: 50%;
+	text-indent: 10px;
+	font-family: 'Nanum Gothic', sans-serif;
+	margin-bottom: 0.5%; 
+}
+
+#nickName_info {
+	width: 80%;
+	height: 60px;
+	font-size: 30px;
+	font-family: 'Nanum Gothic', sans-serif;
+	border: none;
+	margin-left: 15%;
+}
+
+.infoTextarea {
+	width: 80%;
+	height: 90px;
+	resize: none;
+	font-size: 20px;
+	font-family: 'Nanum Gothic', sans-serif;
+	padding: 10px 0 0 10px;
+	border: none;
+	margin-left: 16%;
+}
+
+
+
+#userImg_info {
+	border: 2px solid;
+	border-radius: 70%;
+	width: 180px;
+	height: 180px;
+	margin-left: 80%;
+}
+
+.btnTd {
+	width: 250px;
+}
+
+#buttonB_upPwd {
+	width: 200px; background-color: #675141; color: #fff; font-size: 15px; 
+	border: none; padding: 10px 0; margin: 4px;  
+	text-align: center; border-radius: 5px;
+	margin: 0 auto;
+	margin-bottom: 25%;
+	margin-left: 70%;
+}
+
+#buttonG_upPwd {
+	width: 15%; background-color: #888c43; color: #fff; font-size: 15px; 
+	border: none; padding: 10px 0; margin: 4px; 
+	text-align: center; border-radius: 5px; cursor: pointer;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-left: 42.5%;
+	margin-right: 42.5%;
+	font-family: 'Nanum Gothic', sans-serif;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+#myPwdForm {
+	background: white;
+	text-align: center;
+	margin-left : 10%;	margin-right  : 10%;
+	margin-top  : 5%;	margin-bottom : 5%;
+	height: 100%;
+	width: 80%;
+}
+
+#myPwdTable {
+	width: 100% ;
+}
+
+#myInfoGTable {
+	width: 60% ;
+	margin-left: 20%;
+}
+
+#userImg_infoG {
+	border: 2px solid;
+	border-radius: 70%;
+	width: 180px;
+	height: 180px;
+/* 	margin-left: 35%; */
+	margin-left: 85%;
+}
+
+#nickName_infoG {
+	width: 80%;
+	height: 60px;
+	font-size: 30px;
+	font-family: 'Nanum Gothic', sans-serif;
+	border: none;
+/* 	margin-left: -14%; */
+	margin-left: 25%;
+}
+
+.infoTextareaG {
+	width: 80%;
+	height: 90px;
+	resize: none;
+	font-size: 20px;
+	font-family: 'Nanum Gothic', sans-serif;
+	padding: 10px 0 0 10px;
+	border: none;
+/* 	margin-left: -13%; */
+	margin-left: 25%;
+}
+
+#buttonB_infoG_th {
+	width: 140%;
+	height: 20px;
+	background-color: #675141; color: #fff; font-size: 18px;
+	font-weight: bold;
+	border: 1px solid; padding: 10px 0;
+	text-align: center; border-radius: 5px;
+	margin: 0 auto;
+	margin-left: 65%;
+	padding-top: 15px;
+}
+
+#buttonB_infoG_thG {
+	width: 140%;
+	height: 20px;
+	background-color: #fff6f0; color: #fff; font-size: 20px; 
+	font-weight: bold;
+	border: 1px solid; padding: 10px 0;
+	text-align: center; border-radius: 5px;
+	margin: 0 auto;
+	margin-left: 65%;
+	padding-top: 15px;
+}
+
+#buttonP_info {
+	width: 250px;
+	background-color: #fff6f0; color: black; font-size: 18px;
+	font-weight: bold; cursor: pointer;
+	border: 1px solid lightpink; padding: 15px 80px;
+	text-align: center; border-radius: 5px;
+	margin: 0 auto;
+	margin-top: 3%; margin-bottom: 5%;
+}
+
+#buttonGr_info {
+	width: 250px;
+	background-color: #e3e3e3; color: black; font-size: 18px;
+	font-weight: bold; cursor: pointer;
+	border: 1px solid lightpink; padding: 15px 80px;
+	text-align: center; border-radius: 5px;
+	margin: 0 auto;
+	margin-top: 3%; margin-bottom: 5%;
+}
+
+
+#infoGbB { color: blue;    }
+#infoGbR { color: red;     }
+#infoGbY { color: #ebe836; }
+#infoGbG { color: green;   }
+
+.infoInputG {
+	height: 40px;
+	width: 50%;
+	text-indent: 10px;
+	font-size: 17px; 
+	font-family: 'Nanum Gothic', sans-serif;
+	margin-left: 10%;
+}
+
+#buttonB_update {
+	width: 110px; background-color: #675141; color: #fff; font-size: 15px; 
+	border: none; padding: 10px 0; margin: 4px;  
+	text-align: center; border-radius: 5px;
+	margin: 0 auto;
+	margin-bottom: 28%;
+	margin-left: 110%;
+/* 	width: 110px; background-color: #675141; color: #fff; font-size: 15px;  */
+/* 	border: none; padding: 10px 0; margin: 4px;   */
+/* 	text-align: center; border-radius: 5px; */
+/* 	margin: 0 auto; */
+/* 	margin-left: 250px; */
+/* 	margin-bottom: 45px; */
+}
+
+.UpdateInputTxtArea {
+	height: 90px;
+	width: 80%;
+	margin-left: 3%;
+	resize: none;
+}
+
+.selectLocation {
+	height: 40px;
+	width: 40%;
+	text-indent: 10px;
+	font-size: 13px; 
+	font-family: 'Nanum Gothic', sans-serif;
+/* 	margin-left: 10%; */
+}
